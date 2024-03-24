@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmation de suppression</title>
+</head>
+<body>
+    <h1>Confirmation de suppression</h1>
+    <p>Êtes-vous sûr de vouloir supprimer cet élément ?</p>
+    <form action="{{ url_for('delete_entry', id=entry.id) }}" method="POST">
+        <button type="submit">Confirmer la suppression</button>
+    </form>
+</body>
+</html>
