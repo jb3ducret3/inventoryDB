@@ -16,6 +16,8 @@
             <th>Adresse MAC</th>
             <th>Numéro Bureau</th>
             <th>Étage</th>
+            <!-- Ajouter une colonne pour les actions -->
+            <th>Actions</th>
         </tr>
         {% for entry in entries %}
         <tr>
@@ -27,6 +29,8 @@
             <td>{{ entry[5] }}</td>
             <td>{{ entry[6] }}</td>
             <td>{{ entry[7] }}</td>
+            <td><a href="{{ url_for('delete_entry', id=entry[0]) }}">Supprimer</a></td>
+
         </tr>
         {% endfor %}
     </table>
