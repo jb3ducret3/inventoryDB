@@ -20,4 +20,3 @@ EXPOSE 8888
 
 # Commande par défaut pour exécuter l'application Flask
 CMD ["python3", "inventory.py"]
-
