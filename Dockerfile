@@ -13,7 +13,7 @@ RUN apt update && apt install -y python3-flask
 WORKDIR /app
 
 # Copiez les fichiers de l'application dans le conteneur
-COPY outils_db/* /app/
+COPY . /app/
 
 # Exposez le port sur lequel l'application Flask s'exécutera
 EXPOSE 8888
