@@ -1,6 +1,3 @@
-
-Bien sûr, voici une suggestion pour ces sections :
-
 Projet "InventaireDB"
 Ce projet vise à fournir une solution simple et efficace pour gérer un inventaire d'équipements, de ressources ou de biens au sein d'une organisation. Il utilise Flask, un framework web Python, pour fournir une interface conviviale permettant d'ajouter, de consulter, de modifier et de supprimer des éléments de l'inventaire.
 
