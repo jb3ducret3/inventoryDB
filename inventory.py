@@ -32,6 +32,13 @@ def insert_entry(nom, grade, machine, reseau, adresse_mac, num_bureau, etage):
     conn.commit()
     conn.close()
 
+# Fonction pour supprimer un élément de la base de données
+def delete_item(id):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute('''DELETE FROM inventory WHERE id = ?''', (id,))
+    conn.commit()
+    conn.close()
 # Route pour afficher le formulaire de saisie
 @app.route('/')
 def index():
@@ -86,19 +93,11 @@ def search():
 
     return render_template('search.html', query=query, entries=results)
 
-# Route pour supprimer une entrée de l'inventaire
-@app.route('/delete/<int:id>', methods=['GET'])
-def delete_entry(id):
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-    cursor.execute('''DELETE FROM inventory WHERE id = ?''', (id,))
-    conn.commit()
-    conn.close()
-    return redirect(url_for('delete.html'))
-
-#xprint("Résultats pour la recherche 'ducret':", effectuer_recherche("ducret"))
-#print("Résultats pour la recherche 'grade':", effectuer_recherche("grade"))
-#print("Résultats pour la recherche 'machine':", effectuer_recherche("machine"))
+# Route pour traiter la suppression d'un élément
+@app.route('/delete/<int:id>')
+def delete(id):
+    delete_item(id)
+    return redirect(url_for('inventory'))
 
 if __name__ == '__main__':
     create_table()

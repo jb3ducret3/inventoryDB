@@ -24,7 +24,7 @@
         <button type="submit">Soumettre</button>
     </form>
     
-        <hr>
+    <hr>
 
     <h1>Recherche dans l'inventaire</h1>
     <form action="/search" method="get">
@@ -33,33 +33,14 @@
         <button type="submit">Rechercher</button>
     </form>
     
-       <hr>
-    <h1>Modification d'inventaire</h1>
-    <form action="/modifie" method="get">
-        <label for="query">Search:</label>
-        <input type="text" name="query">
-        <button type="submit">Modifier</button>
-
-
-        <hr>
-    
-    <h1>Supprimer une entrée d'inventaire</h1>
-    <form action="/delete" method="get">
-        <label for="id">ID de l'entrée:</label>
-        <input type="text" name="id" required><br>
-        <button type="submit">Supprimer</button>
-    </form>
+    <hr>
         
-        <hr>
-    <h1>Afficher l'inventaire</h1>
-       <form action="/inventory" method="get">
-            <label for"entries">Search:</label>
-            <input type="text" name="entries">
-            <button type="submit">Afficher</button>
 
-    
-</body>
-</html>
-   
+    <h1>Afficher l'inventaire</h1>
+    <form action="/inventory" method="get">
+        <label for="entries">Search:</label>
+        <input type="text" name="entries">
+        <button type="submit">Afficher</button>
+    </form>
 </body>
 </html>
