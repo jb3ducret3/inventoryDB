@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  # Configuration du service Traefik
+  traefik:
+    # Utilisation de l'image Traefik v2.5
+    image: traefik:v2.5
+    # Commande pour configurer Traefik
+    command:
+      # Activer l'API de Traefik en mode non sécurisé
+      - "--api.insecure=true"
+      # Activer le provider Docker pour détecter les conteneurs à exposer
+      - "--providers.docker=true"
+      # Configuration des points d'entrée pour le trafic HTTP
+      - "--entrypoints.web.address=:80"
+      # Configuration des points d'entrée pour le trafic HTTPS
+      - "--entrypoints.websecure.address=:443"
+      # Activer le challenge HTTP ACME pour Let's Encrypt
+      - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
+      # Configurer le point d'entrée pour le challenge HTTP ACME
+      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
+      # Indiquer l'email associé au compte Let's Encrypt
+      - "--certificatesresolvers.myresolver.acme.email=your.email@example.com"
+      # Spécifier le chemin de stockage des certificats Let's Encrypt
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    # Exposer les ports 80 et 443 pour le trafic HTTP et HTTPS
+    ports:
+      - "80:80"
+      - "443:443"
+    # Monter le socket Docker pour permettre à Traefik de communiquer avec le démon Docker
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      # Montage d'un volume local pour stocker les certificats Let's Encrypt
+      - "./letsencrypt:/letsencrypt"
+
+  # Configuration de votre application
+  your_application:
+    # Image de votre application
+    image: inventaireDB
+    # Étiquettes pour configurer Traefik
+    labels:
+      # Activer Traefik pour ce service
+      - "traefik.enable=true"
+      # Définir la règle pour router le trafic vers votre application
+      - "traefik.http.routers.inventaireDB.rule=Host(`yourdomain.com`)"
+      # Spécifier les points d'entrée pour le trafic HTTPS
+      - "traefik.http.routers.inventaireDB.entrypoints=websecure"
+      # Spécifier le port sur lequel votre application écoute
+      - "traefik.http.services.inventaireDB.loadbalancer.server.port=8888"
