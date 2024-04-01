@@ -1,5 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, Response
 import sqlite3
+import csv
+from reportlab.platypus import SimpleDocTemplate, Table
+from reportlab.lib.pagesizes import letter
 
 app = Flask(__name__)
 
@@ -39,6 +42,7 @@ def delete_item(id):
     cursor.execute('''DELETE FROM inventory WHERE id = ?''', (id,))
     conn.commit()
     conn.close()
+
 # Route pour afficher le formulaire de saisie
 @app.route('/')
 def index():
@@ -78,7 +82,7 @@ def effectuer_recherche(query):
     return results
 
 # Route pour la recherche
-@app.route('/search',methods=['GET'])
+@app.route('/search', methods=['GET'])
 def search():
     query = request.args.get('query')
 
@@ -98,6 +102,67 @@ def search():
 def delete(id):
     delete_item(id)
     return redirect(url_for('inventory'))
+
+# Route pour exporter en CSV
+@app.route('/export/csv')
+def export_csv():
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute('''SELECT * FROM inventory''')
+    inventory_data = cursor.fetchall()
+    conn.close()
+    output = generate_csv(inventory_data)
+    return Response(output, mimetype='text/csv', headers={'Content-Disposition': 'attachment;filename=inventory.csv'})
+
+# Route pour exporter en PDF
+@app.route('/export/pdf')
+def export_pdf():
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute('''SELECT * FROM inventory''')
+    inventory_data = cursor.fetchall()
+    conn.close()
+    output = generate_pdf(inventory_data)
+    return Response(output, mimetype='application/pdf', headers={'Content-Disposition': 'attachment;filename=inventory.pdf'})
+
+# Fonction pour générer un fichier CSV à partir des données d'inventaire
+#def generate_csv(data):
+ #   with open('inventory.csv', 'w', newline='') as csvfile:
+  #      writer = csv.DictWriter(csvfile, fieldnames=data[0].keys())
+   #     writer.writeheader()
+    #    for item in data:
+     #       writer.writerow(item)
+    # Pas besoin de retourner le contenu du fichier ici
+    #return 'inventory.csv'
+
+# Fonction pour générer un fichier PDF à partir des données d'inventaire
+#def generate_pdf(data):
+ #   filename = 'inventory.pdf'
+  #  doc = SimpleDocTemplate(filename, pagesize=letter)
+   # table_data = [list(data[0].keys())] + [[str(item[key]) for key in item.keys()] for item in data]
+    #table = Table(table_data)
+    #doc.build([table])
+    # Pas besoin de retourner le contenu du fichier ici
+    #return 'inventory.pdf'
+# Fonction pour générer un fichier CSV à partir des données d'inventaire
+def generate_csv(data):
+    with open('inventory.csv', 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        # Écrire les en-têtes de colonnes
+        writer.writerow(['id', 'nom', 'grade', 'machine', 'reseau', 'adresse_mac', 'num_bureau', 'etage'])
+        # Écrire les données
+        writer.writerows(data)
+    return 'inventory.csv'
+
+# Fonction pour générer un fichier PDF à partir des données d'inventaire
+def generate_pdf(data):
+    filename = 'inventory.pdf'
+    doc = SimpleDocTemplate(filename, pagesize=letter)
+    table_data = [['id', 'nom', 'grade', 'machine', 'reseau', 'adresse_mac', 'num_bureau', 'etage']] + data
+    table = Table(table_data)
+    doc.build([table])
+    return 'inventory.pdf'
+
 
 if __name__ == '__main__':
     create_table()

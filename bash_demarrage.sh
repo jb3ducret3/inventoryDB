@@ -5,7 +5,7 @@ sudo apt-get update
 sudo apt-get install python3-venv
 
 # Créer un nouvel environnement virtuel
-python3 -m venv venv
+python3 -m venv VenDB
 
 # Activer l'environnement virtuel
 source venv/bin/activate
