@@ -10,5 +10,5 @@ sudo git init
 sudo git clone github.com/jb3ducret3/inventaireDB
 mkdir inventaireDB
 docker build -t inventaireDB debian:latest .
-chmod +x bash_demarrage.sh
-./bash_demarrage.sh
+chmod +x venv+lancement.sh
+./venv_lancement.sh
