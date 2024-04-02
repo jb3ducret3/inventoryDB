@@ -20,9 +20,9 @@ services:
       # Configurer le point d'entrée pour le challenge HTTP ACME
       - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
       # Indiquer l'email associé au compte Let's Encrypt
-      - "--certificatesresolvers.myresolver.acme.email=your.email@example.com"
+      ##- "--certificatesresolvers.myresolver.acme.email=your.email@example.com"
       # Spécifier le chemin de stockage des certificats Let's Encrypt
-      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      ##- "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     # Exposer les ports 80 et 443 pour le trafic HTTP et HTTPS
     ports:
       - "80:80"
@@ -31,10 +31,10 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       # Montage d'un volume local pour stocker les certificats Let's Encrypt
-      - "./letsencrypt:/letsencrypt"
+      #- "./letsencrypt:/letsencrypt"
 
   # Configuration de votre application
-  your_application:
+  inventraireDB:
     # Image de votre application
     image: inventaireDB
     # Étiquettes pour configurer Traefik
@@ -42,7 +42,7 @@ services:
       # Activer Traefik pour ce service
       - "traefik.enable=true"
       # Définir la règle pour router le trafic vers votre application
-      - "traefik.http.routers.inventaireDB.rule=Host(`yourdomain.com`)"
+      - "traefik.http.routers.inventaireDB.rule=Host(`inventaireDB.local`)"
       # Spécifier les points d'entrée pour le trafic HTTPS
       - "traefik.http.routers.inventaireDB.entrypoints=websecure"
       # Spécifier le port sur lequel votre application écoute
