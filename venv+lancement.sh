@@ -1,20 +1,17 @@
 #!/bin/bash
-
-# Installer python3-venv si ce n'est pas déjà fait
-sudo apt-get update
-
-# Créer un nouvel environnement virtuel
-python3 -m venv VenDB
-
-# Activer l'environnement virtuel
-source venv/bin/activate
-
-# Installer Flask et ReportLab
-pip install flask
-pip install reportlab
-
-# Installer tree pour la visualisation
-sudo apt-get install tree
-
-# Lancer le script Python
+sudo apt update -y
+sudo apt upgrade -y
+sudo apt install docker.io -y
+sudo apt install docker-compose -y?
+sudo apt install python3 venv -y ?
+sudo apt install python3-pip -y ?
+sudo app install git -y
+sudo git init
+sudo git clone github.com/jb3ducret3/inventaireDB
+mkdir inventaireDB
+docker run --rm --name apache httpd:alpine htpasswd -nb admin corsic
+#!=$psswd
+docker build -t inventaireDB debian:latest .
+chmod +x bash_demarrage.sh
+./bash_demarrage.sh
 docker-compose up -d
