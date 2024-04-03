@@ -6,9 +6,6 @@ export PRIVATE_IP=$(ip route get 1 | awk '{print $NF;exit}'):8888
 sudo apt-get install dnsmasq -y
 # Configuration de dnsmasq
 echo "address=/local/$PRIVATE_IP" | sudo tee -a /etc/dnsmasq.conf
-cd inventaireDB
-python3 -m venv venv
-source venv/bin/activate
 docker build -t inventairedb .
 sudo systemctl restart dnsmasq
 docker-compose up -d
