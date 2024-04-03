@@ -9,8 +9,7 @@ sudo app install git -y
 sudo git init
 sudo git clone github.com/jb3ducret3/inventaireDB
 mkdir inventaireDB
-docker run --rm --name apache httpd:alpine htpasswd -nb admin corsic
-#!=$psswd
+export psswd=$(docker run --rm --name apache httpd:alpine htpasswd -nb admin corsic)
 docker build -t inventaireDB debian:latest .
 chmod +x bash_demarrage.sh
 ./bash_demarrage.sh
