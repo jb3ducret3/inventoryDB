@@ -1,23 +1,16 @@
-# Utilisez l'image de base Debian
-FROM debian
+FROM python:3.9-slim
 
-# Mise à jour du système et installation de Python 3 et pip
-RUN apt-get update && \
-    apt-get install -y python3 python3-pip && \
-    apt-get clean
-    python3 -m venv venv
-    source venv/bin/activate
-# Installation de Flask
-RUN apt update && apt install -y python3-flask
-
-# Créez un répertoire de travail pour l'application
+# Définir le répertoire de travail dans le conteneur
 WORKDIR /app
 
-# Copiez les fichiers de l'application dans le conteneur
+# Copier les fichiers de l'application dans le conteneur
 COPY . /app/
 
-# Exposez le port sur lequel l'application Flask s'exécutera
+# Installer les dépendances Python
+RUN pip install Flask reportlab
+
+# Exposer le port sur lequel l'application Flask s'exécutera
 EXPOSE 8888
 
 # Commande par défaut pour exécuter l'application Flask
-CMD ["python3", "inventory.py"]
+CMD ["python", "inventory.py"]
