@@ -8,7 +8,7 @@ cd inventaireDB
 python3 -m venv venv
 source venv/bin/activate
 docker build -t inventaireDB debian:latest .
-export psswd=$(docker run --rm --name apache httpd:alpine htpasswd -nb admin corsic)
+export psswd=$(docker run --rm --name apache httpd:alpine htpasswd -nb admin techosgringos)
 export PRIVATE_IP=$(ip route get 1 | awk '{print $NF;exit}'):8888
 sudo systemctl restart dnsmasq
 docker-compose up -d
