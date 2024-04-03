@@ -9,5 +9,5 @@ sudo app install git -y
 sudo git init
 sudo git clone github.com/jb3ducret3/inventaireDB
 cd inventaireDB
-chmod +x venv+lancement.sh
-./venv+lancement.sh
+chmod +x venvlancement.sh
+./venvlancement.sh
