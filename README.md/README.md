@@ -53,4 +53,4 @@ Utilisez la commande docker run pour exécuter le conteneur Docker sur le serveu
 
 Conclusion 🎉
 ============
-Voilà, vous avez maintenant toutes les clés en main pour révolutionner l'organisation de vos bureaux ! Plus besoin de vous prendre la tête avec Excel, notre projet s'occupe de tout. Préparez-vous à devenir les rois du flicage bureautique de bas niveau ! 😄
+Voilà, vous avez maintenant toutes les clés en main pour révolutionner l'organisation de vos bureaux ! 😄
