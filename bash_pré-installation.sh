@@ -10,4 +10,4 @@ sudo git init
 sudo git clone github.com/jb3ducret3/inventaireDB
 cd inventaireDB
 chmod +x venv+lancement.sh
-./venv_lancement.sh
+./venv+lancement.sh
