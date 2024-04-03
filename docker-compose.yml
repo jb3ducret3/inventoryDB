@@ -1,36 +1,34 @@
-reversion: '3'
+version: '3'
 
 services:
   inventaireDB:
     restart: always
     image: inventaireDB
     volumes:
-    - /srv/docker/inventaireDB:/config
+      - /srv/docker/inventaireDB:/config
     labels:
-    - "traefik.enable=true"
-    - "traefik.http.routers.home.rule=Host(`inventaireDB.local`)"
-    - "traefik.http.routers.home.entrypoints=http"
-    - "traefik.http.routers.home.tls=true"
-    - "traefik.http.routers.home.tls.certresolver=user"
-    - "traefik.http.inventaireDBport=8888"
-       # Activer Traefik pour ce service
-    - "traefik.http.routers.inventaireDB.entrypoints=websecure"
-      # Spécifier le port sur lequel votre application écoute
-    - "traefik.http.services.inventaireDB.loadbalancer.server.port=8888"
+      - "traefik.enable=true"
+      - "traefik.http.routers.inventaireDB.rule=Host(`inventaireDB.local`)"
+      - "traefik.http.routers.inventaireDB.entrypoints=http"
+      - "traefik.http.routers.inventaireDB.tls=true"
+      - "traefik.http.routers.inventaireDB.tls.certresolver=user"
+      - "traefik.http.services.inventaireDB.loadbalancer.server.port=8888"
+      - "traefik.http.routers.inventaireDB.entrypoints=websecure"
 
   reverse-proxy:
     restart: always
     image: traefik:v2.0
     ports:
-    - "443:443"
-    - "80:80"
+      - "443:443"
+      - "80:80"
     volumes:
-    - /srv/traefik.toml:/etc/traefik/traefik.toml
-    - /srv/services.toml:/etc/traefik/services.toml
-    - /var/run/docker.sock:/var/run/docker.sock
+      - /srv/traefik.toml:/etc/traefik/traefik.toml
+      - /srv/services.toml:/etc/traefik/services.toml
+      - /var/run/docker.sock:/var/run/docker.sock
     labels:
-    - "traefik.http.routers.api.rule=Host(`traefik.inventaireDB.local`)"
-    - "traefik.http.routers.api.service=api@internal"
-    - "traefik.http.routers.api.entrypoints=http"
-    - "traefik.http.routers.api.middlewares=auth"
-    - "traefik.http.middlewares.auth.basicauth.users=$pwssd"
+      - "traefik.http.routers.api.rule=Host(`traefik.inventaireDB.local`)"
+      - "traefik.http.routers.api.service=api@internal"
+      - "traefik.http.routers.api.entrypoints=http"
+      - "traefik.http.routers.api.middlewares=auth"
+      - "traefik.http.middlewares.auth.basicauth.users=$pwssd"
+
