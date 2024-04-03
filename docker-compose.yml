@@ -1,11 +1,11 @@
-version: '3'
+reversion: '3'
 
 services:
   inventaireDB:
     restart: always
-    image: homeassistant/home-assistant
+    image: inventaireDB
     volumes:
-    - /srv/docker/home-assistant:/config
+    - /srv/docker/inventaireDB:/config
     labels:
     - "traefik.enable=true"
     - "traefik.http.routers.home.rule=Host(`inventaireDB.local`)"
@@ -33,5 +33,4 @@ services:
     - "traefik.http.routers.api.service=api@internal"
     - "traefik.http.routers.api.entrypoints=http"
     - "traefik.http.routers.api.middlewares=auth"
-	#docker run --rm --name apache httpd:alpine htpasswd -nb admin corsic
     - "traefik.http.middlewares.auth.basicauth.users=$pwssd"
