@@ -14,7 +14,7 @@
     [http.services.inventaireDB]
       [http.services.inventaireDB.loadBalancer]
         [[http.services.inventaireDB.loadBalancer.servers]]
-          url = "http://VARIP:8888/"
+          url = "http://PRIVATE_IP/"
 
 [entryPoints]
   [entryPoints.http]
