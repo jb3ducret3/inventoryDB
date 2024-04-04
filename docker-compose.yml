@@ -1,34 +1,29 @@
-version: '3'
+version: "3.3"
 
 services:
-  inventaireDB:
-    restart: always
-    image: inventairedb
+
+  traefik:
+    image: "traefik:v2.11"
+    container_name: "traefik"
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.address=:8080"
+    ports:
+      - "80:80"
+      - "8080:8080"
     volumes:
-      - /srv/docker/inventairedb:/config
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  inventairedb:
+    image: "traefik/inventairedb"
+    container_name: "inventairedb1"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.inventairedb.rule=Host(`inventaireDB.local`)"
-      - "traefik.http.routers.inventairedb.entrypoints=http"
-      - "traefik.http.routers.inventairedb.tls=true"
-      - "traefik.http.routers.inventairedb.tls.certresolver=user"
-      - "traefik.http.services.inventairedb.loadbalancer.server.port=8888"
-      - "traefik.http.routers.inventairedb.entrypoints=websecure"
+      - "traefik.http.routers.whoami.rule=Host(`inventairedb.local`)"
+      - "traefik.http.routers.whoami.entrypoints=web"
 
-  reverse-proxy:
-    restart: always
-    image: traefik:v2.0
-    ports:
-      - "443:443"
-      - "80:80"
-    volumes:
-      - /srv/traefik.toml:/etc/traefik/traefik.toml
-      - /srv/services.toml:/etc/traefik/services.toml
-      - /var/run/docker.sock:/var/run/docker.sock
-    labels:
-      - "traefik.http.routers.api.rule=Host(`traefik.inventairedb.local`)"
-      - "traefik.http.routers.api.service=api@internal"
-      - "traefik.http.routers.api.entrypoints=http"
-      - "traefik.http.routers.api.middlewares=auth"
-      - "traefik.http.middlewares.auth.basicauth.users=$pwssd"
-
+https://doc.traefik.io/traefik/user-guides/docker-compose/basic-example/
