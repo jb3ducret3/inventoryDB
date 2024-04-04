@@ -22,3 +22,5 @@ systemctl restart dnsmasq
 nano /etc/hosts
 $ip_local inventairedb.local
 dig inventaire.local+short
+drill google.com | grep "Query time"
+
