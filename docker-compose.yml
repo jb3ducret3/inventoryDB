@@ -26,4 +26,4 @@ services:
       - "traefik.http.routers.whoami.rule=Host(`inventairedb.local`)"
       - "traefik.http.routers.whoami.entrypoints=web"
 
-https://doc.traefik.io/traefik/user-guides/docker-compose/basic-example/
+#https://doc.traefik.io/traefik/user-guides/docker-compose/basic-example/
