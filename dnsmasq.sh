@@ -11,14 +11,7 @@ sudo systemctl disable --now systemd-resolved
 echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
 
 # Configuration de dnsmasq
-echo "port=53
-      domain-needed
-      bogus-priv
-      listen-address=127.0.0.1,$ip_local
-      expand-hosts
-      domain=inventairedb.localhost
-      cache-size=1000" | sudo tee /etc/dnsmasq.conf
-
+echo "port=53 domain-needed bogus-priv listen-address=127.0.0.1,$ip_local expand-hosts domain=inventairedb.localhost cache-size=1000" | sudo tee /etc/dnsmasq.conf
 
 # Ajout de l'entrée pour inventairedb.local dans /etc/hosts
 echo "$ip_local inventairedb.localhost" | sudo tee -a /etc/hosts
