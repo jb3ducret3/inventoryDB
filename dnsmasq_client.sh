@@ -3,7 +3,7 @@
 # Mise à jour des paquets
 sudo apt update
 sudo apt upgrade
-
+IP_DISTANT=$IP_de_l_adresse_du_dns
 # Installation de dnsutils et ldnsutils
 sudo apt-get install dnsutils ldnsutils -y
 
