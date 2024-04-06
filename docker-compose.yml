@@ -1,12 +1,10 @@
 version: "3.3"
 
 services:
-
   traefik:
     image: "traefik:v2.11"
     container_name: "traefik"
     command:
-      #- "--log.level=DEBUG"
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
@@ -17,10 +15,12 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
-  whoami:
-    image: "traefik/whoami"
-    container_name: "simple-service"
+  inventairedb:
+    image: inventairedb
+    container_name: "inventairedb" # Nommez votre conteneur inventairedb
+    ports:
+      - "8888:8888" # Associez le port 8888 du conteneur au port 8888 de l'hôte
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`)"
-      - "traefik.http.routers.whoami.entrypoints=web"
+      - "traefik.http.routers.inventairedb.rule=Host(`inventairedb.localhost`)"
+      - "traefik.http.routers.inventairedb.entrypoints=web"
