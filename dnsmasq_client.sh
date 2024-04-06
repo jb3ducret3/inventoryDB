@@ -11,4 +11,4 @@ sudo apt-get install dnsutils ldnsutils -y
 echo "$IP_DISTANT inventairedb.localhost" >> /etc/resolv.conf
 
 # Vérification de la résolution DNS pour inventaire.local
-dig inventaire.local
+dig inventairedb.localhost
