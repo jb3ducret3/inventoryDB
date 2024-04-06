@@ -14,4 +14,4 @@
     [http.services.inventaireDB]
       [http.services.inventaireDB.loadBalancer]
         [[http.services.inventaireDB.loadBalancer.servers]]
-          url = "http://$ip_local/"
+          url = "http://$PRIVATE_IP/"
