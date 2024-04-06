@@ -2,13 +2,18 @@
 
 # Mise à jour des paquets
 sudo apt update
-sudo apt upgrade
-IP_DISTANT=$ip_local #adresses du dns, script a utiliser sur le client 
+sudo apt upgrade -y
+
 # Installation de dnsutils et ldnsutils
 sudo apt-get install dnsutils ldnsutils -y
 
-# Modification du fichier /etc/resolv.conf pour ajouter l'adresse IP distante et le domaine inventaire.local
-echo "$IP_DISTANT inventairedb.localhost" >> /etc/resolv.conf
+# Définir l'adresse IP distante et le domaine
+IP_DISTANT="192.168.27.167"
+DOMAINE="inventairedb.localhost"
+
+# Ajout de l'adresse IP distante et du domaine à la configuration DNS
+echo "nameserver $IP_DISTANT" | sudo tee /etc/resolv.conf
+echo "search $DOMAINE" | sudo tee -a /etc/resolv.conf
 
 # Vérification de la résolution DNS pour inventaire.local
-dig inventairedb.localhost
+dig $DOMAINE
