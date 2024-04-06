@@ -12,7 +12,7 @@ systemctl disable --now systemd-resolved
 
 # Configuration du fichier /etc/resolv.conf avec Google DNS (8.8.8.8)
 echo "nameserver 8.8.8.8" > /etc/resolv.conf
-
+echo "inventairedb.localhost 192.168.1.76" > /etc/resolv.conf
 # Installation de dnsmasq, dnsutils et ldnsutils
 apt-get install dnsmasq dnsutils ldnsutils -y
 
@@ -28,18 +28,12 @@ echo "port=53
       domain=inventaire.local
       cache-size=1000" > /etc/dnsmasq.conf
 
-# Configuration du fichier /etc/resolv.conf avec l'adresse IP locale et dnsmasq
-echo "nameserver $ip_local
-      dnsmasq --test" > /etc/resolv.conf
 
 # Redémarrage de dnsmasq
 systemctl restart dnsmasq
 
 # Ajout de l'entrée pour inventairedb.local dans /etc/hosts
-echo "$ip_local inventairedb.local" >> /etc/hosts
-
-# Vérification de la résolution DNS pour inventaire.local
-dig inventaire.local+short
+echo "$ip_local inventairedb.localhost" >> /etc/hosts
 
 # Vérification du temps de réponse pour une requête DNS vers google.com
 drill google.com | grep "Query time"
