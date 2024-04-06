@@ -17,7 +17,7 @@ services:
 
   inventairedb:
     image: inventairedb
-    container_name: "inventairedb" # Nommez votre conteneur inventairedb
+    container_name: inventairedb
     ports:
       - "8888:8888" # Associez le port 8888 du conteneur au port 8888 de l'hôte
     labels:
