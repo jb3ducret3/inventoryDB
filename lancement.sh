@@ -13,8 +13,9 @@ sudo apt install docker-compose -y
 sudo apt-get install python3-venv -y 
 sudo apt install python3-pip -y 
 mkdir PDF_CSV
+ip_local=$(hostname -I | awk '{print $1}')
 # Construire l'image Docker de l'application Python
-cd /PYTHON/
+cd PYTHON
 docker build -t inventairedb .
 if [ $? -ne 0 ]; then
     echo "Erreur lors de la construction de l'image Docker pour l'application Python."
@@ -22,7 +23,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Construire l'image Docker du serveur DNS
-cd /inventaireDB/DNS/
+cd DNS
 docker build -t dnsserveur .
 if [ $? -ne 0 ]; then
     echo "Erreur lors de la construction de l'image Docker pour le serveur DNS."
@@ -30,7 +31,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Revenir au répertoire racine du projet
-cd /inventaireDB/
+#cd /inventaireDB/
 
 # Démarrer les conteneurs avec Docker Compose
 docker-compose up -d
