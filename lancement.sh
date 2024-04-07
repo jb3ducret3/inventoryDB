@@ -12,7 +12,7 @@ sudo apt install docker-compose -y
 # Installer Python et ses dépendances
 sudo apt-get install python3-venv -y 
 sudo apt install python3-pip -y 
-
+mkdir PDF_CSV
 # Construire l'image Docker de l'application Python
 cd /PYTHON/
 docker build -t inventairedb .
