@@ -1,3 +1,4 @@
+
 Projet Inventory.py - "Quand la gestion des stocks devient un sport extrême" 🔥
 Bienvenue dans notre projet d'inventaire pyrotechnique où chaque ligne de code est une grenade dégoupillée !
 
