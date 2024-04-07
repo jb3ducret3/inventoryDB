@@ -25,3 +25,40 @@ services:
       - "traefik.http.routers.inventairedb.rule=Host(`inventairedb.localhost`)"
       - "traefik.http.routers.inventairedb.entrypoints=web"
     restart: always
+
+version: "3.3"
+
+services:
+  traefik:
+    image: "traefik:v2.11"
+    container_name: "traefik"
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8081:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  inventairedb:
+    image: inventairedb
+    container_name: inventairedb
+    ports:
+      - "8888:8888" # Associez le port 8888 du conteneur au port 8888 de l'hôte
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.inventairedb.rule=Host(`inventairedb.localhost`)"
+      - "traefik.http.routers.inventairedb.entrypoints=web"
+    restart: always
+    volumes:
+      - /chemin/vers/stockage/local:/chemin/vers/stockage/conteneur
+
+  dnsserver:
+    image: dnsserver
+    container_name: dnsserver
+    ports:
+      - "53:53/udp"
+    restart: always
