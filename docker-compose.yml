@@ -57,8 +57,8 @@ services:
       - /app:/PDF_CSV
 
   dnsserver:
-    image: dnsserver
-    container_name: dnsserver
+    image: dnsserveur
+    container_name: dnsserveur
     ports:
       - "53:53/udp"
     restart: always
