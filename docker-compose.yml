@@ -54,7 +54,7 @@ services:
       - "traefik.http.routers.inventairedb.entrypoints=web"
     restart: always
     volumes:
-      - /chemin/vers/stockage/local:/chemin/vers/stockage/conteneur
+      - /inventaireDB/PDF_CSV:/app/
 
   dnsserver:
     image: dnsserver
