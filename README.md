@@ -17,7 +17,7 @@ Le projet Inventory.py est là pour vous rappeler que la gestion des stocks peut
              ./lancement.sh"
 
 ## Utilisation
-Une fois que vous avez réussi à garder votre sang-froid, vous pouvez accéder à notre interface utilisateur en naviguant vers `http://localhost:8888`. Préparez-vous à être époustouflé par des graphiques d'erreur plus colorés que l'arc-en-ciel !
+Une fois que vous avez réussi à garder votre sang-froid, vous pouvez accéder à notre interface utilisateur en naviguant vers `http://inventairedb.localhost`. Préparez-vous à être époustouflé par des graphiques d'erreur plus colorés que l'arc-en-ciel !
 
 ## Partie Deux - L'Apocalypse Continues
 Pour la suite de nos aventures, préparez-vous à explorer le monde du déploiement continu avec K3s et Jenkins. Attendez-vous à des émotions fortes et des nuits blanches où chaque déploiement est une question de vie ou de mort !
