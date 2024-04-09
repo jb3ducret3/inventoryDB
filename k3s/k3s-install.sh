@@ -3,8 +3,8 @@ sudo apt isntall curl -y
 sudo apt install openssh 
 curl -sfL https://get.k3s.io | sh -
 cat /var/lib/rancher/k3s/server/node-token 
-K3S_TOKEN:$
-K3S_URL:$10.10.10.10:6443
+K3S_TOKEN:$mynodetoken
+K3S_URL:$10.10.10.10
 node1=$10.10.10.20
 ssh worker@node1 curl -sfL https://get.k3s.io | K3S_URL=https://myserver:6443 K3S_TOKEN=mynodetoken sh -
 cd /home/inventairedb/
