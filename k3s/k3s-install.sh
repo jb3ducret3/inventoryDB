@@ -17,5 +17,11 @@ mv i k3s
 fi
 kubectl apply -f *.yaml
 kubectl get nodes
-if #$
+
 curl inventairedb.localhost
+
+if [ $? -ne 0 ]; then
+    echo "Erreur lors de la construction des Pods de l'appli."
+    exit 1
+fi
+
