@@ -2,7 +2,7 @@ sudo apt update & upgrade -y
 sudo apt isntall curl -y
 sudo apt install openssh 
 curl -sfL https://get.k3s.io | sh -
-cat
+cat /var/lib/rancher/k3s/server/node-token 
 K3S_TOKEN:$
 K3S_URL:$10.10.10.10:6443
 node1=$10.10.10.20
