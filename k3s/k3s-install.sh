@@ -12,7 +12,7 @@ curl -L https://github.com/kubernetes/kompose/releases/download/v1.16.0/kompose-
 chmod +x kompose
 sudo mv ./kompose /usr/local/bin/kompose
 kompose convert
-kubectl apply -f frontend-service.yaml,redis-master-service.yaml,redis-slave-service.yaml,frontend-deployment.yaml,redis-master-deployment.yaml,redis-slave-deployment.yaml
+#kubectl apply -f frontend-service.yaml,redis-master-service.yaml,redis-slave-service.yaml,frontend-deployment.yaml,redis-master-deployment.yaml,redis-slave-deployment.yaml
 if i=*.yaml; then
 mv i k3s
 fi
