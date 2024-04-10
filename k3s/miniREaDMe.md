@@ -1,3 +1,11 @@
+
+
+
+
+                                                                                          EN COURS
+
+
+
 Dans le cadre de l'evolution de l'application j'ai choisi de mettre en avant la partie integration continu qui permettra une evolution constante du produit tant sur la forme que sur le fond ( du css en passant par la base de donnée) sans avoir a detruire l'infrastructure et en testant in vivo les evolutions que l'on souhaite appliquer.
 
 Pour se faire jenkins est l'outils ideal:
