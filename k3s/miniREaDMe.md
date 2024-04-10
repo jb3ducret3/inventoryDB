@@ -9,8 +9,11 @@
 Dans le cadre de l'evolution de l'application j'ai choisi de mettre en avant la partie integration continu qui permettra une evolution constante du produit tant sur la forme que sur le fond ( du css en passant par la base de donnée) sans avoir a detruire l'infrastructure et en testant in vivo les evolutions que l'on souhaite appliquer.
 
 Pour se faire jenkins est l'outils ideal:
+
 ==> dockerisable ( mise en place de volume persistant en local )
+
 ==> grande source documentaire pour aider a la mise en place
+
 ==> plugin nombreux pr k8s, ou pour faire de la review de code type OWASP ou NPM, grafana et prometheus pour la gestion
 
 dans le cadre du PCA/PRA, de la scalabiité du projet , ainsi que sa gestion, j'ai choisi d'utiliser une version allegée d'un outils preformant KUBERNETES.++>K3S.
