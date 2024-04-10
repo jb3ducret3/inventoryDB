@@ -1,31 +1,42 @@
-sudo apt update & upgrade -y
-sudo apt isntall curl -y
-sudo apt install openssh 
+#!/bin/bash
+
+# Mise à jour du système et installation de packages
+sudo apt update -y
+sudo apt upgrade -y
+sudo apt install curl -y
+sudo apt install openssh-client -y
+
+# Installation de K3s
 curl -sfL https://get.k3s.io | sh -
-cat /var/lib/rancher/k3s/server/node-token 
-K3S_TOKEN:$mynodetoken
-K3S_URL:$10.10.10.10
-node1=$10.10.10.20
-ssh worker@node1 curl -sfL https://get.k3s.io | K3S_URL=https://myserver:6443 K3S_TOKEN=mynodetoken sh -
-cd /home/inventairedb/
+K3S_TOKEN=$(cat /var/lib/rancher/k3s/server/token)
+K3S_URL="http://10.10.10.10:6443"
+
+# Déploiement des nœuds ouvriers
+ssh worker@node1 "curl -sfL https://get.k3s.io | K3S_URL=$K3S_URL K3S_TOKEN=$K3S_TOKEN sh -"
+
+# Installation de Kompose
 curl -L https://github.com/kubernetes/kompose/releases/download/v1.16.0/kompose-linux-amd64 -o kompose
 chmod +x kompose
-sudo mv ./kompose /usr/local/bin/kompose
+sudo mv kompose /usr/local/bin/kompose
+
+# Conversion des fichiers Docker Compose en manifestes Kubernetes
+cd /home/inventairedb/
 kompose convert
-#kubectl apply -f frontend-service.yaml,redis-master-service.yaml,redis-slave-service.yaml,frontend-deployment.yaml,redis-master-deployment.yaml,redis-slave-deployment.yaml
-if i=*.yaml; then
-mv i k3s
-fi
-kubectl apply -f *.yaml
+
+# Déplacement des fichiers convertis dans un répertoire k3s
+mkdir -p k3s
+mv *.yaml k3s/
+
+# Application des manifestes Kubernetes
+kubectl apply -f k3s/
+
+# Vérification des nœuds
 kubectl get nodes
 
+# Vérification de l'application déployée
 curl inventairedb.localhost
 
 if [ $? -ne 0 ]; then
-    echo "Erreur lors de la construction des Pods de l'appli."
+    echo "Erreur lors de la vérification de l'application déployée."
     exit 1
 fi
-
-https://medium.com/47billion/playing-with-kubernetes-using-k3d-and-rancher-78126d341d23 K3D.
-https://cours.brosseau.ovh/tp/ci/kubernetes/deploy-container-in-kubernetes.html
-https://www.sokube.io/blog/k3d-k3s-k8s-perfect-match-for-dev-and-testing
