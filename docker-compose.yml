@@ -52,9 +52,9 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.inventairedb.rule=Host(`inventairedb.localhost`)"
       - "traefik.http.routers.inventairedb.entrypoints=web"
-    restart: always
     volumes:
       - ./PDF_CSV:/app
+    restart: always
 
   dnsserver:
     image: dnsserveur
