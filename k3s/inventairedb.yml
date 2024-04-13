@@ -1,0 +1,128 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traefik-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: traefik
+  template:
+    metadata:
+      labels:
+        app: traefik
+    spec:
+      containers:
+        - name: traefik
+          image: traefik:v2.11
+          args:
+            - "--api.insecure=true"
+            - "--providers.docker=true"
+            - "--providers.docker.exposedbydefault=false"
+            - "--entrypoints.web.address=:80"
+          ports:
+            - containerPort: 80
+            - containerPort: 8180
+          volumeMounts:
+            - name: docker-socket
+              mountPath: /var/run/docker.sock
+      volumes:
+        - name: docker-socket
+          hostPath:
+            path: /var/run/docker.sock
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventairedb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inventairedb
+  template:
+    metadata:
+      labels:
+        app: inventairedb
+    spec:
+      containers:
+        - name: inventairedb
+          image: ducretjb/projet:inventairedb   # Modifier cette ligne avec votre référentiel et le tag approprié
+          ports:
+            - containerPort: 8888
+          labels:
+            traefik.enable: "true"
+            traefik.http.routers.inventairedb.rule: "Host(`inventairedb.localhost`)"
+            traefik.http.routers.inventairedb.entrypoints: "web" 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: inventairedb
+spec:
+  selector:
+    app: inventairedb
+  ports:
+    - protocol: TCP
+      port: 8888
+      targetPort: 8888
+  externalIPs:
+    - "192.168.24.131"   # Remplacez ceci par l'adresse IP du serveur
+  type: ClusterIP
+  ---
+  ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik-service
+spec:
+  selector:
+    app: traefik
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+    - name: web
+      protocol: TCP
+      port: 8180
+      targetPort: 8180
+  externalIPs:
+    - "192.168.24.131"   # Remplacez ceci par l'adresse IP du serveur
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dnsserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dnsserver
+  template:
+    metadata:
+      labels:
+        app: dnsserver
+    spec:
+      containers:
+        - name: dnsserver
+          image: ducretjb/projet:dnsserveur   # Modifier cette ligne avec votre référentiel et le tag approprié
+          ports:
+            - containerPort: 53
+              protocol: UDP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dnsserver
+spec:
+  selector:
+    app: dnsserver
+  ports:
+    - protocol: UDP
+      port: 53
+      targetPort: 53
+  externalIPs:
+    - "192.168.24.131"   # Remplacez ceci par l'adresse IP du serveur
+  type: ClusterIP
