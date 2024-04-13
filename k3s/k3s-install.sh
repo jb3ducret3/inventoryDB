@@ -40,3 +40,18 @@ if [ $? -ne 0 ]; then
     echo "Erreur lors de la vérification de l'application déployée."
     exit 1
 fi
+
+# Nom du référentiel sur Docker Hub
+repository="userdockerhub/repository"
+
+# Liste des images à tagger et à pousser
+images=("inventairedb" "dnsserveur")
+
+# Parcourir la liste des images
+for image in "${images[@]}"; do
+    # Tagger l'image avec le nom du référentiel et le tag correspondant
+    docker tag "$image:latest" "$repository:$image"
+    
+    # Pousser l'image taggée vers Docker Hub
+    docker push "$repository:$image"
+done
