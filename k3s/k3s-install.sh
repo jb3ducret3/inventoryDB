@@ -9,29 +9,15 @@ sudo apt install openssh-client -y
 # Installation de K3s
 curl -sfL https://get.k3s.io | sh -
 K3S_TOKEN=$(cat /var/lib/rancher/k3s/server/token)
-K3S_URL="http://10.10.10.10:6443"
+K3S_URL="http://monip:6443"
 
 # Déploiement des nœuds ouvriers
-ssh worker@node1 "curl -sfL https://get.k3s.io | K3S_URL=$K3S_URL K3S_TOKEN=$K3S_TOKEN sh -"
+#ssh worker@node1 "curl -sfL https://get.k3s.io | K3S_URL=$K3S_URL K3S_TOKEN=$K3S_TOKEN sh -"
 
 # Installation de Kompose
 curl -L https://github.com/kubernetes/kompose/releases/download/v1.16.0/kompose-linux-amd64 -o kompose
-chmod +x kompose
-sudo mv kompose /usr/local/bin/kompose
-
-# Conversion des fichiers Docker Compose en manifestes Kubernetes
-cd /home/inventairedb/
-kompose convert
-
-# Déplacement des fichiers convertis dans un répertoire k3s
-mkdir -p k3s
-mv *.yaml k3s/
-
-# Application des manifestes Kubernetes
-kubectl apply -f k3s/
-
-# Vérification des nœuds
-kubectl get nodes
+#chmod +x kompose
+#sudo mv kompose /usr/local/bin/kompose
 
 # Vérification de l'application déployée
 curl inventairedb.localhost
@@ -55,3 +41,10 @@ for image in "${images[@]}"; do
     # Pousser l'image taggée vers Docker Hub
     docker push "$repository:$image"
 done
+
+# Application des manifestes Kubernetes
+kubectl apply -f inventairedb.yml
+
+kubectl annotate deployment inventairedb traefik.ingress.kubernetes.io/router.entrypoints=web
+kubectl annotate deployment inventairedb traefik.ingress.kubernetes.io/router.rule="Host(`inventairedb.localhost`)"
+
