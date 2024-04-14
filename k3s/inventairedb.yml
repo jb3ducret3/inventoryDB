@@ -1,9 +1,10 @@
+# Déploiement de Traefik
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: traefik-deployment
 spec:
-  replicas: 1
+  replicas: 1  # Nombre de répliques du déploiement (1 dans ce cas)
   selector:
     matchLabels:
       app: traefik
@@ -14,29 +15,30 @@ spec:
     spec:
       containers:
         - name: traefik
-          image: traefik:v2.11
+          image: traefik:v2.11  # Utilisation de l'image Traefik version 2.11
           args:
-            - "--api.insecure=true"
-            - "--providers.docker=true"
-            - "--providers.docker.exposedbydefault=false"
-            - "--entrypoints.web.address=:80"
+            - "--api.insecure=true"  # Activation de l'API non sécurisée pour Traefik
+            - "--providers.docker=true"  # Activation de la prise en charge de Docker comme fournisseur de configuration
+            - "--providers.docker.exposedbydefault=false"  # Désactivation de l'exposition par défaut des services Docker
+            - "--entrypoints.web.address=:80"  # Définition de l'adresse d'écoute de l'entrée web sur le port 80
           ports:
-            - containerPort: 80
-            - containerPort: 8180
+            - containerPort: 80  # Ouverture du port 80 pour le trafic entrant
+            - containerPort: 8180  # Ouverture du port 8180 pour l'API de Traefik
           volumeMounts:
             - name: docker-socket
-              mountPath: /var/run/docker.sock
+              mountPath: /var/run/docker.sock  # Montage du socket Docker pour accéder aux informations sur les conteneurs
       volumes:
         - name: docker-socket
           hostPath:
-            path: /var/run/docker.sock
+            path: /var/run/docker.sock  # Chemin d'accès au socket Docker sur l'hôte
 ---
+# Déploiement de l'application "inventairedb"
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: inventairedb
 spec:
-  replicas: 1
+  replicas: 2  # Nombre de répliques du déploiement (2 dans ce cas pour l'équilibrage de charge)
   selector:
     matchLabels:
       app: inventairedb
@@ -47,56 +49,34 @@ spec:
     spec:
       containers:
         - name: inventairedb
-          image: ducretjb/projet:inventairedb   # Modifier cette ligne avec votre référentiel et le tag approprié
+          image: ducretjb/projet:inventairedb  # Utilisation de l'image Docker de l'application "inventairedb"
           ports:
-            - containerPort: 8888
-         # labels:
-          #  traefik.enable: "true"
-           # traefik.http.routers.inventairedb.rule: "Host(`inventairedb.localhost`)"
-            #traefik.http.routers.inventairedb.entrypoints: "web" 
+            - containerPort: 8888  # Ouverture du port 8888 pour le trafic entrant
 ---
+# Service pour l'application "inventairedb"
 apiVersion: v1
 kind: Service
 metadata:
   name: inventairedb
 spec:
   selector:
-    app: inventairedb
+    app: inventairedb  # Sélection des pods associés à l'application "inventairedb"
   ports:
     - protocol: TCP
-      port: 8888
-      targetPort: 8888
+      port: 8888  # Port exposé par le service
+      targetPort: 8888  # Port des conteneurs cibles
   externalIPs:
-    - "192.168.24.131"   # Remplacez ceci par l'adresse IP du serveur
-  type: ClusterIP
-  ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: traefik-service
-spec:
-  selector:
-    app: traefik
-  ports:
-    - name: http
-      protocol: TCP
-      port: 80
-      targetPort: 80
-    - name: web
-      protocol: TCP
-      port: 8180
-      targetPort: 8180
-  externalIPs:
-    - "192.168.24.131"   # Remplacez ceci par l'adresse IP du serveur
-  type: LoadBalancer
-  ---
-  
+    - "192.168.24.131"  # Adresse IP externe du service (à remplacer par l'adresse IP du serveur)
+  type: LoadBalancer  # Type de service LoadBalancer pour l'équilibrage de charge
+---
+# Autres services (identiques)
+# Déploiement du serveur DNS
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: dnsserver
 spec:
-  replicas: 1
+  replicas: 1  # Nombre de répliques du déploiement (1 dans ce cas)
   selector:
     matchLabels:
       app: dnsserver
@@ -107,22 +87,23 @@ spec:
     spec:
       containers:
         - name: dnsserver
-          image: ducretjb/projet:dnsserveur   # Modifier cette ligne avec votre référentiel et le tag approprié
+          image: ducretjb/projet:dnsserveur  # Utilisation de l'image Docker du serveur DNS
           ports:
-            - containerPort: 53
-              protocol: UDP
+            - containerPort: 53  # Ouverture du port 53 pour le trafic DNS
+              protocol: UDP  # Protocole UDP pour le trafic DNS
 ---
+# Service pour le serveur DNS
 apiVersion: v1
 kind: Service
 metadata:
   name: dnsserver
 spec:
   selector:
-    app: dnsserver
+    app: dnsserver  # Sélection des pods associés au serveur DNS
   ports:
     - protocol: UDP
-      port: 53
-      targetPort: 53
+      port: 53  # Port exposé par le service pour le trafic DNS
+      targetPort: 53  # Port des conteneurs cibles
   externalIPs:
-    - "192.168.24.131"   # Remplacez ceci par l'adresse IP du serveur
-  type: ClusterIP
+    - "192.168.24.131"  # Adresse IP externe du service (à remplacer par l'adresse IP du serveur)
+  type: ClusterIP  # Type de service ClusterIP pour le trafic DNS interne
