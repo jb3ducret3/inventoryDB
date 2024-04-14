@@ -31,13 +31,26 @@ if [ $? -ne 0 ]; then
 fi
 
 # Revenir au répertoire racine du projet
-#cd ..
+cd ..
+# Demander à l'utilisateur s'il souhaite exécuter le script d'installation de K3s ou lancer le Docker Compose
+echo "Voulez-vous lancer le script d'installation de K3s (k) ou démarrer les conteneurs avec Docker Compose (d) ?"
+read choix
 
-# Démarrer les conteneurs avec Docker Compose
-docker-compose up -d
-if [ $? -ne 0 ]; then
-    echo "Erreur lors du démarrage des conteneurs avec Docker Compose."
+if [ "$choix" == "k" ]; then
+    # Exécuter le script d'installation de K3s
+    cd k3s
+    chmod +x k3s-install.sh
+    ./k3s-install.sh
+    cd ..
+elif [ "$choix" == "d" ]; then
+    # Démarrer les conteneurs avec Docker Compose
+    docker-compose up -d
+    if [ $? -ne 0 ]; then
+        echo "Erreur lors du démarrage des conteneurs avec Docker Compose."
+        exit 1
+    fi
+    echo "Les conteneurs ont été démarrés avec succès."
+else
+    echo "Choix invalide."
     exit 1
 fi
-
-echo "Les conteneurs ont été démarrés avec succès."
