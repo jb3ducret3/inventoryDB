@@ -50,10 +50,10 @@ spec:
           image: ducretjb/projet:inventairedb   # Modifier cette ligne avec votre référentiel et le tag approprié
           ports:
             - containerPort: 8888
-          labels:
-            traefik.enable: "true"
-            traefik.http.routers.inventairedb.rule: "Host(`inventairedb.localhost`)"
-            traefik.http.routers.inventairedb.entrypoints: "web" 
+         # labels:
+          #  traefik.enable: "true"
+           # traefik.http.routers.inventairedb.rule: "Host(`inventairedb.localhost`)"
+            #traefik.http.routers.inventairedb.entrypoints: "web" 
 ---
 apiVersion: v1
 kind: Service
@@ -69,7 +69,6 @@ spec:
   externalIPs:
     - "192.168.24.131"   # Remplacez ceci par l'adresse IP du serveur
   type: ClusterIP
-  ---
   ---
 apiVersion: v1
 kind: Service
@@ -90,7 +89,8 @@ spec:
   externalIPs:
     - "192.168.24.131"   # Remplacez ceci par l'adresse IP du serveur
   type: LoadBalancer
----
+  ---
+  
 apiVersion: apps/v1
 kind: Deployment
 metadata:
