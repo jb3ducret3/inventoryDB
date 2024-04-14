@@ -23,8 +23,8 @@ read -sp "Entrez votre mot de passe Docker : " DCK_MDP
 echo # Nouvelle ligne pour améliorer la lisibilité
 
 # Se connecte à Docker Hub avec les informations d'identification fournies par l'utilisateur
-docker login -u "$DCK_LOG" -p "$DCK_MDP"
-
+#docker login -u "$DCK_LOG" -p "$DCK_MDP"
+echo "$DCK_MDP" | docker login --username "$DCK_LOG" --password-stdin
 # Tag et pousse les images Docker vers le référentiel Docker Hub de l'utilisateur
 docker tag dnsserveur:latest "$DCK_LOG/projet:dnsserveur"
 docker push "$DCK_LOG/projet:dnsserveur"
